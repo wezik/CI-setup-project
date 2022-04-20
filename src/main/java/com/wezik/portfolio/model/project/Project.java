@@ -1,4 +1,4 @@
-package com.wezik.portfolio.dto.project;
+package com.wezik.portfolio.model.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,14 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Project {
-
     @Id
-    @Column(nullable = false, length = 7)
+    @Column(nullable = false, length = 14)
     private String code;
     @Column(length = 24)
     private String name;
     private String description;
     private boolean isMultiComponent;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectComponent> components;
 }

@@ -1,4 +1,4 @@
-package com.wezik.portfolio.dto.project;
+package com.wezik.portfolio.model.project;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -15,15 +15,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectComponent {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(nullable = false, length = 14)
+    private String code;
     @Column(length = 24)
     private String name;
     private String description;
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_code", nullable = false)
+    @JsonIgnore
     private Project project;
 }
