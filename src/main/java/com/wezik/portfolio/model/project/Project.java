@@ -24,4 +24,6 @@ public class Project {
     private boolean isMultiComponent;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectComponent> components;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectImage> images;
 }
