@@ -17,6 +17,7 @@ public class ProjectMapper {
                 dto.getName(),
                 dto.getDescription(),
                 dto.isMultiComponent(),
+                new ArrayList<>(),
                 new ArrayList<>()
         );
     }
