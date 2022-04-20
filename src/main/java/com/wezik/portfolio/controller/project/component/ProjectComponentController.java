@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ProjectComponentController {
 
     private final ProjectService projectService;
-    private final ProjectComponentService ProjectComponentService;
+    private final ProjectComponentService projectComponentService;
 
     private final ProjectComponentMapper projectComponentMapper;
 
@@ -29,7 +29,7 @@ public class ProjectComponentController {
 
     @GetMapping
     public AppResponse getComponents() {
-        final List<ProjectComponentDto> components = ProjectComponentService.getProjectComponents().stream()
+        final List<ProjectComponentDto> components = projectComponentService.getProjectComponents().stream()
                 .map(projectComponentMapper::mapToDto)
                 .collect(Collectors.toList());
         return AppResponse.statusOK(components);
@@ -37,7 +37,7 @@ public class ProjectComponentController {
 
     @GetMapping("/{code}")
     public AppResponse getComponent(@PathVariable("code") String code) {
-        final Optional<ProjectComponent> componentOptional = ProjectComponentService.findProjectComponent(code);
+        final Optional<ProjectComponent> componentOptional = projectComponentService.findProjectComponent(code);
         return componentOptional.isEmpty() ?
                 AppResponse.statusNotFound("Component not found") : AppResponse.statusOK(projectComponentMapper.mapToDto(componentOptional.get()));
     }
@@ -51,7 +51,7 @@ public class ProjectComponentController {
 
         if (optionalProject.isEmpty()) {
             return AppResponse.statusBadRequest("Project of this code doesn't exists");
-        } else if (ProjectComponentService.projectComponentExists(dto.getCode())) {
+        } else if (projectComponentService.projectComponentExists(dto.getCode())) {
             return AppResponse.statusBadRequest("Component of this code already exists");
         } else if (dto.getCode().length() > codeLimit) {
             return AppResponse.statusBadRequest("Component code can't exceed " + codeLimit + " letters");
@@ -66,12 +66,12 @@ public class ProjectComponentController {
         }
 
         final ProjectComponent component = projectComponentMapper.mapDtoToProjectComponent(dto, project);
-        return AppResponse.statusOK(ProjectComponentService.saveProjectComponent(component));
+        return AppResponse.statusOK(projectComponentService.saveProjectComponent(component));
     }
 
     @DeleteMapping("/{code}")
     public AppResponse deleteComponent(@PathVariable("code") String code) {
-        ProjectComponentService.deleteProjectComponent(code);
+        projectComponentService.deleteProjectComponent(code);
         return AppResponse.statusOK();
     }
 }
